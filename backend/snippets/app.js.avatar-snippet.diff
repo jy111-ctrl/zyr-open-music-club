@@ -1,0 +1,38 @@
+--- avatar 模块在 src/app.js 中的两段改动（已抽出）
+  原行号：21 + 145–161
+  配套文件：
+      - src/routes/avatar.routes.js   (D:/桌面文件夹/信管数据包/信息系统设计/avatar/src/routes/avatar.routes.js)
+      - src/services/avatar.service.js  (同上目录)
+      - web/avatar/{index.html,style.css,app.js}  (同上 web/avatar/)
+
+=== 段 1：import（行 21） ===
+原文（位于其它 ./routes/*.routes 引用之后）：
+const { createAvatarRouter } = require('./routes/avatar.routes')
+
+=== 段 2：路由 + 静态文件（行 145–161） ===
+原文（紧接在 /api/local 之后、/api/protected 之前）：
+  if (rateLimiters) app.use('/api/avatar', rateLimiters.global)
+  app.use('/api/avatar', requireLogin, createAvatarRouter({ database }))
+
+  // 个人画像编辑器静态资源（仅 /avatar 路径放宽 CSP，允许 inline style 用于 CSS 变量）
+  const webDir = path.join(__dirname, '..', 'web')
+  app.use(
+    '/avatar',
+    (req, res, next) => {
+      res.setHeader(
+        'Content-Security-Policy',
+        "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; base-uri 'self'; frame-ancestors 'none'",
+      )
+      next()
+    },
+    express.static(path.join(webDir, 'avatar')),
+  )
+
+=== 复原说明 ===
+把这两段贴回去就能恢复 avatar 路由 + 静态资源挂载。复原后调用：
+  - GET/PATCH/POST/PUT/DELETE /api/avatar/components  （components 列表 + CRUD）
+  - GET/PATCH/POST         /api/avatar/me            （当前用户穿搭）
+  - GET                    /avatar/                  （编辑器主页）
+  - GET                    /avatar/{style.css,app.js}
+
+CSP 头说明：仅对 /avatar 放宽到 unsafe-inline style（CSS 变量需要）；其它路径仍走默认 CSP。

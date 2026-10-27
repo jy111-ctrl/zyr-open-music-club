@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open Music Club · 我的画像</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="page-header">
+        <div>
+          <h1>我的画像</h1>
+          <p class="subtitle">基础穿搭手动搭配 · 听歌画像（即将开放）</p>
+        </div>
+        <div class="header-actions">
+          <span id="status" class="status status--idle">未登录或未保存</span>
+          <button id="save-btn" class="btn btn--primary" type="button" disabled>
+            保存穿搭
+          </button>
+        </div>
+      </header>
+
+      <section class="preview-card">
+        <div class="preview-stage">
+          <svg
+            id="avatar-svg"
+            viewBox="0 0 200 240"
+            width="240"
+            height="288"
+            role="img"
+            aria-label="用户画像预览"
+          >
+            <style>
+              .t {
+                fill: var(--avatar-theme, #7c3aed);
+                stroke: var(--avatar-theme, #7c3aed);
+              }
+            </style>
+          </svg>
+        </div>
+        <div class="preview-meta">
+          <h2>主题色</h2>
+          <p class="hint">颜色变更会即时套用到 T 恤 / 休闲裤 / 半裙 / 鞋 / 耳机等可染色部件。</p>
+          <div id="theme-swatches" class="swatches" role="radiogroup" aria-label="主题色"></div>
+
+          <h2>当前穿搭</h2>
+          <ul id="current-slots" class="current-slots"></ul>
+        </div>
+      </section>
+
+      <section class="picker-grid" id="picker-grid"></section>
+
+      <footer class="page-footer">
+        <span id="updated-at" class="updated-at"></span>
+      </footer>
+    </main>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>

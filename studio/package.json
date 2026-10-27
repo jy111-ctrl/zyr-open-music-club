@@ -1,0 +1,25 @@
+{
+  "name": "avatar-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "像素音乐小人穿搭编辑器 — 换装工坊 / 自动换装 / 照片定制 / 形象库（SQLite 持久化）",
+  "main": "serve.js",
+  "scripts": {
+    "start": "node serve.js",
+    "dev": "node serve.js",
+    "verify": "node tests/verify.js",
+    "test": "node tests/verify.js && node tests/fine_check.js && node tests/decor_check.js && node tests/test-photo-logic.js && node tests/test-views-logic.js",
+    "smoke": "node tests/test-api-smoke.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "keywords": [
+    "avatar",
+    "pixel-art",
+    "svg",
+    "sqlite",
+    "open-music-club"
+  ],
+  "license": "MIT"
+}

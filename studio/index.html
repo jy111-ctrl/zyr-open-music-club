@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Avatar Studio · Open Music Club</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body data-view="manual">
+    <div class="app-shell">
+      <!-- ============ 左侧栏目 ============ -->
+      <nav class="side-nav" aria-label="主导航">
+        <div class="nav-brand">
+          <div class="brand-logo brand-logo--sm" aria-hidden="true"></div>
+          <div class="nav-brand-text">
+            <span class="nav-brand-title">Avatar Studio</span>
+            <span class="nav-brand-sub">Open Music Club</span>
+          </div>
+        </div>
+
+        <p class="nav-group-label">Styling</p>
+
+        <button class="nav-item" type="button" data-nav="manual" aria-current="page">
+          <span class="nav-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 3l4 2 4-2 3 2-2 3-1-.6V21H8V7.4L7 8 5 5z" />
+            </svg>
+          </span>
+          <span class="nav-text">
+            <strong>换装工坊</strong>
+            <em>Manual</em>
+          </span>
+        </button>
+
+        <button class="nav-item" type="button" data-nav="auto">
+          <span class="nav-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" />
+              <circle cx="12" cy="12" r="3.2" />
+            </svg>
+          </span>
+          <span class="nav-text">
+            <strong>自动换装</strong>
+            <em>Auto Styling</em>
+          </span>
+        </button>
+
+        <button class="nav-item" type="button" data-nav="photo">
+          <span class="nav-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="16" rx="3" />
+              <circle cx="9" cy="10" r="2" />
+              <path d="M21 16l-5-5L5 20" />
+            </svg>
+          </span>
+          <span class="nav-text">
+            <strong>照片定制</strong>
+            <em>Photo Studio</em>
+          </span>
+        </button>
+
+        <p class="nav-group-label">Library</p>
+
+        <button class="nav-item" type="button" data-nav="saved">
+          <span class="nav-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 3h12a1 1 0 011 1v17l-7-4.5L5 21V4a1 1 0 011-1z" />
+            </svg>
+          </span>
+          <span class="nav-text">
+            <strong>我的形象</strong>
+            <em>Saved</em>
+          </span>
+        </button>
+
+        <div class="nav-foot">
+          <span class="nav-db" id="nav-db">数据库连接中…</span>
+          <span class="nav-hint">v2 · SQLite</span>
+        </div>
+      </nav>
+
+      <main class="page">
+        <header class="page-header">
+          <div class="brand">
+            <div class="brand-text">
+              <h1 class="brand-title" id="view-title">换装工坊</h1>
+              <p class="brand-sub" id="view-sub">逐槽位微调你的角色形象 — 服饰 / 发型 / 配饰自由混搭</p>
+            </div>
+          </div>
+          <div class="header-actions">
+            <span id="status" class="status">Connecting…</span>
+            <button id="save-btn" class="btn btn--primary" type="button">保存形象</button>
+          </div>
+        </header>
+
+        <!-- ============ 视图 1：换装工坊 ============ -->
+        <section class="view" data-view="manual">
+          <section class="preview-card">
+            <div class="preview-stage">
+              <svg
+                id="avatar-svg"
+                viewBox="0 0 240 288"
+                width="240"
+                height="288"
+                role="img"
+                aria-label="角色预览"
+              ></svg>
+            </div>
+
+            <div class="preview-meta">
+              <div class="meta-section">
+                <h2>调色板 <em>Palette</em></h2>
+                <p class="hint">8 套莫兰迪主题色板（苔绿/雾蓝/灰紫/暖驼/灰粉/烟青/栗棕/奶咖），切换时所有染色部件按色板替换。</p>
+                <div id="palette-swatches" class="selector-row" role="radiogroup" aria-label="调色板"></div>
+              </div>
+
+              <div class="meta-section">
+                <h2>肤色 <em>Skin</em></h2>
+                <p class="hint">4 套肤色（浅瓷/暖米/琥珀/深陶），影响脸部、四肢、颈部。</p>
+                <div id="skin-swatches" class="selector-row" role="radiogroup" aria-label="肤色"></div>
+              </div>
+
+              <div class="meta-section">
+                <h2>当前穿搭 <em>Now Equipped</em></h2>
+                <ul id="current-slots" class="current-slots"></ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="picker-grid" id="picker-grid"></section>
+        </section>
+
+        <!-- ============ 视图 2：自动换装 ============ -->
+        <section class="view" data-view="auto" hidden>
+          <div class="auto-layout">
+            <aside class="auto-stage-card">
+              <div class="auto-stage-inner">
+                <svg
+                  id="auto-avatar-svg"
+                  viewBox="0 0 240 288"
+                  width="240"
+                  height="288"
+                  role="img"
+                  aria-label="自动换装预览"
+                ></svg>
+              </div>
+              <p class="auto-caption" id="auto-caption">选择一种风格，点「一键换装」生成整套搭配。</p>
+            </aside>
+
+            <div class="auto-panel">
+              <div class="panel-head">
+                <h2>风格预设 <em>Style Presets</em></h2>
+                <p class="hint">每个预设限定可选的部件范围与配色主题，随机组合也能保持整套协调。</p>
+              </div>
+              <div class="style-grid" id="auto-styles" role="radiogroup" aria-label="风格预设"></div>
+
+              <div class="panel-head panel-head--tight">
+                <h2>锁定槽位 <em>Lock Slots</em></h2>
+                <p class="hint">锁定后自动换装会保留该槽位当前的部件。</p>
+              </div>
+              <div class="lock-row" id="auto-locks"></div>
+
+              <div class="auto-actions">
+                <button class="btn btn--primary" id="auto-roll" type="button">一键换装</button>
+                <button class="btn" id="auto-random" type="button">完全随机</button>
+                <label class="auto-check">
+                  <input type="checkbox" id="auto-keep-theme" checked />
+                  <span>保持当前配色</span>
+                </label>
+              </div>
+
+              <div class="panel-head panel-head--tight">
+                <h2>最近方案 <em>Recent</em></h2>
+              </div>
+              <div class="auto-recent" id="auto-recent">
+                <p class="auto-recent-empty">还没有生成记录 — 换几套试试。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 视图 3：照片定制 ============ -->
+        <section class="view" data-view="photo" hidden>
+          <section class="photo-studio" id="photo-studio">
+            <header class="ps-header">
+              <h3><span class="slot-order">#00</span>照片定制 <em>Photo Studio</em></h3>
+              <span class="ps-badge">♬ NEW</span>
+            </header>
+            <p class="ps-intro">
+              上传一张照片（穿搭、风景、专辑封面均可）：系统自动提取色彩搭配、生成组合色块，
+              并按照片风格定制 3 套专属音乐小人。全部在浏览器本地分析，照片不会被上传。
+            </p>
+
+            <div class="ps-layout">
+              <div class="ps-left">
+                <div class="ps-drop" id="ps-drop" role="button" tabindex="0" aria-label="上传照片">
+                  <div class="ps-drop-inner">
+                    <div class="ps-drop-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="3"/>
+                        <circle cx="9" cy="9" r="2"/>
+                        <path d="M21 15l-5-5L5 21"/>
+                      </svg>
+                    </div>
+                    <p class="ps-drop-title">拖拽照片到这里，或点击选择文件</p>
+                    <p class="ps-drop-tip">支持 JPG / PNG / WebP · 本地分析，不上传</p>
+                    <p class="ps-status" id="ps-status"></p>
+                  </div>
+                </div>
+                <input type="file" id="ps-file" accept="image/*" hidden />
+                <div class="ps-demos">
+                  <span class="ps-demos-label">没有照片？试试示例：</span>
+                  <button type="button" class="ps-demo-btn" data-demo="sunset">落日余晖</button>
+                  <button type="button" class="ps-demo-btn" data-demo="neon">霓虹夜城</button>
+                  <button type="button" class="ps-demo-btn" data-demo="pastel">粉彩甜品</button>
+                  <button type="button" class="ps-demo-btn" data-demo="forest">森林晨雾</button>
+                </div>
+              </div>
+
+              <div class="ps-right">
+                <div class="ps-empty" id="ps-empty">
+                  上传照片后，这里会显示提取出的组合色块与风格判读
+                </div>
+                <div class="ps-analysis" id="ps-analysis" hidden>
+                  <div class="ps-photo-wrap">
+                    <canvas id="ps-thumb" width="96" height="96"></canvas>
+                  </div>
+                  <div class="ps-mid">
+                    <div class="ps-palette-row">
+                      <span class="ps-row-label">组合色块</span>
+                      <div class="ps-palette" id="ps-palette"></div>
+                    </div>
+                    <div class="ps-feats" id="ps-feats"></div>
+                  </div>
+                  <button class="btn btn--primary" id="ps-generate" disabled>生成音乐小人</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="ps-outfits" id="ps-outfits" hidden></div>
+          </section>
+        </section>
+
+        <!-- ============ 视图 4：我的形象 ============ -->
+        <section class="view" data-view="saved" hidden>
+          <div class="saved-head">
+            <div>
+              <h2>我的形象 <em>Saved Outfits</em></h2>
+              <p class="hint" id="saved-hint">
+                形象保存在本地 SQLite（data/avatar.sqlite），刷新页面不会丢失。
+              </p>
+            </div>
+            <div class="saved-head-actions">
+              <button class="btn" id="saved-refresh" type="button">刷新列表</button>
+              <button class="btn btn--primary" id="saved-save" type="button">保存当前形象</button>
+            </div>
+          </div>
+
+          <div class="saved-grid" id="saved-grid"></div>
+
+          <div class="saved-empty" id="saved-empty" hidden>
+            <p class="saved-empty-title">还没有保存的形象</p>
+            <p class="hint">在「换装工坊」或「自动换装」里搭配好，点右上角「保存形象」。</p>
+          </div>
+
+          <div class="db-card" id="db-card" hidden></div>
+        </section>
+      </main>
+    </div>
+
+    <!-- 底部播放器条 -->
+    <footer class="page-footer" id="page-footer">
+      <div class="player-track">
+        <div class="player-thumb" id="player-thumb"></div>
+        <div class="player-info">
+          <span class="now-playing">♬ Now Styling</span>
+          <span class="track-name" id="track-name">正在装扮中…</span>
+        </div>
+      </div>
+      <div class="player-progress">
+        <div class="progress-bar" aria-hidden="true"></div>
+        <div class="progress-time">
+          <span id="progress-current">00:00</span>
+          <span id="progress-total">06 槽位 · 59 款</span>
+        </div>
+      </div>
+      <div class="player-meta">
+        <span class="updated-at" id="updated-at">--:--:--</span>
+        <span class="legend">
+          <kbd>Click</kbd> 切换部件
+        </span>
+      </div>
+    </footer>
+
+    <!-- 保存形象弹窗 -->
+    <div class="modal" id="save-modal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="save-modal-title">
+        <h3 id="save-modal-title">保存形象</h3>
+        <p class="modal-sub" id="save-modal-sub">写入本地数据库 avatar_outfits 表</p>
+        <label class="field">
+          <span>形象名称</span>
+          <input id="save-name" type="text" maxlength="40" autocomplete="off" />
+        </label>
+        <div class="modal-actions">
+          <button class="btn" id="save-cancel" type="button">取消</button>
+          <button class="btn btn--primary" id="save-confirm" type="button">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" hidden></div>
+
+    <script src="./app.js" defer></script>
+    <script src="./photo.js" defer></script>
+    <script src="./views.js" defer></script>
+  </body>
+</html>

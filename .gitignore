@@ -1,0 +1,21 @@
+# 依赖
+node_modules/
+
+# 本机运行时二进制（几十 MB，勿入库）
+runtime/
+
+# SQLite 运行时副产物（主库 avatar.sqlite 保留）
+studio/data/*.sqlite-wal
+studio/data/*.sqlite-shm
+studio/data/*.db-journal
+
+# 本地临时脚本与输出
+_*.js
+*.out
+*.tmp
+studio/tests/snapshot.html
+
+# 系统文件
+Thumbs.db
+desktop.ini
+.DS_Store
