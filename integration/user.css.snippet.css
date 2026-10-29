@@ -1,0 +1,26 @@
+
+/* ---- 换装工坊入口（avatar studio） ---- */
+.user-avatar-entry {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  margin: 16px 0 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line, #b9b5ab);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.user-avatar-entry:hover,
+.user-avatar-entry:focus-visible {
+  background: rgba(169, 120, 63, .08);
+  border-color: var(--accent, #a9783f);
+}
+.user-avatar-entry:active { transform: translateY(1px); }
+.user-avatar-entry strong { font-size: .88rem; font-weight: 600; letter-spacing: .02em; }
+.user-avatar-entry small { font-size: .6rem; letter-spacing: .14em; opacity: .55; white-space: nowrap; }

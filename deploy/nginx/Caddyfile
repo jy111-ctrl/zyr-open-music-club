@@ -1,0 +1,28 @@
+# 用 Caddy 替代 Nginx 的最简方案（自动申请与续期证书）
+# 用法：把 __DOMAIN__ 换成你的域名，然后  caddy run --config Caddyfile
+#
+# 前提：Caddy 需能直接服务前端静态文件，并把 /api 转给 Node。
+# 注意：Caddy 不负责上传大小以外的应用逻辑，Node 仍监听 127.0.0.1:3000。
+
+__DOMAIN__ {
+	encode zstd gzip
+
+	# API 反代
+	handle /api/* {
+		reverse_proxy 127.0.0.1:3000
+	}
+	handle /health {
+		reverse_proxy 127.0.0.1:3000
+	}
+
+	# 前端静态站 + SPA 回退
+	handle {
+		root * /srv/open-music-club/current/frontend/dist
+		try_files {path} /index.html
+		file_server
+	}
+
+	request_body {
+		max_size 110MB
+	}
+}
