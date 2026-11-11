@@ -34,12 +34,16 @@ function seedFingerprints(database) {
     'INSERT INTO fingerprint_songs (id, title, duration_sec, hash_count, created_at) VALUES (?, ?, ?, ?, ?)',
   )
   const insertHash = database.prepare('INSERT OR IGNORE INTO fingerprint_hashes (song_id, h, t) VALUES (?, ?, ?)')
+  const insertChroma = database.prepare('INSERT OR REPLACE INTO fingerprint_chroma (song_id, title, frames, fps, data) VALUES (?, ?, ?, ?, ?)')
 
   const run = database.transaction(() => {
     for (const song of seed) {
       insertSong.run(song.id, song.title, song.durationSec, song.hashCount, song.createdAt || Date.now())
       const flat = song.hashes || []
       for (let i = 0; i + 1 < flat.length; i += 2) insertHash.run(song.id, flat[i], flat[i + 1])
+      if (song.chroma && Array.isArray(song.chroma.data)) {
+        insertChroma.run(song.id, song.title, Math.floor(song.chroma.data.length / 12), song.chroma.fps || 5.38, JSON.stringify(song.chroma.data))
+      }
     }
   })
   run()

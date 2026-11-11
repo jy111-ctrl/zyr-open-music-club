@@ -124,7 +124,6 @@ function initializeChromaSchema(database) {
       data TEXT NOT NULL
     );
   `)
-  seedChroma(database)
 }
 
 function seedChroma(database) {

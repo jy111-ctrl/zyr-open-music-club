@@ -341,3 +341,11 @@ export function openFingerprintPanel() {
 if (typeof window !== 'undefined') {
   ;(window as unknown as { omcOpenFingerprint?: () => void }).omcOpenFingerprint = openFingerprintPanel
 }
+
+// 工具入口（构建指纹种子时使用，不影响正常功能）
+if (typeof window !== 'undefined') {
+  void (async () => {
+    const mod = await import('./fingerprint.ts')
+    ;(window as unknown as { omcFingerprintTools?: unknown }).omcFingerprintTools = mod
+  })()
+}
